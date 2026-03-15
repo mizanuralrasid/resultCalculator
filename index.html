@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Result Calculator</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#667eea,#764ba2);
+padding:20px;
+}
+
+/* CARD */
+
+.container{
+width:420px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+border-radius:16px;
+padding:30px;
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+color:white;
+}
+
+/* TITLE */
+
+h2{
+text-align:center;
+margin-bottom:25px;
+font-weight:600;
+}
+
+/* EXAM BLOCK */
+
+.exam{
+margin-bottom:18px;
+}
+
+label{
+font-size:14px;
+font-weight:600;
+display:block;
+margin-bottom:5px;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
+input{
+flex:1;
+padding:10px;
+border:none;
+border-radius:8px;
+outline:none;
+font-size:14px;
+}
+
+/* BUTTON */
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#00e5ff;
+color:#003344;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.03);
+background:#00c9e0;
+}
+
+/* RESULT */
+
+.result{
+margin-top:20px;
+background:white;
+color:#333;
+padding:15px;
+border-radius:10px;
+font-size:15px;
+line-height:1.7;
+}
+
+.result span{
+font-weight:bold;
+color:#764ba2;
+}
+
+@media(max-width:480px){
+
+.container{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Result Percentage Calculator</h2>
+
+<div class="exam">
+<label>1st Unit Test</label>
+<div class="row">
+<input type="number" id="u1" placeholder="Marks">
+<input type="number" id="u1t" placeholder="Out of">
+</div>
+</div>
+
+<div class="exam">
+<label>2nd Unit Test</label>
+<div class="row">
+<input type="number" id="u2" placeholder="Marks">
+<input type="number" id="u2t" placeholder="Out of">
+</div>
+</div>
+
+<div class="exam">
+<label>Half Yearly (30%)</label>
+<div class="row">
+<input type="number" id="half" placeholder="Marks">
+<input type="number" id="halft" placeholder="Out of">
+</div>
+</div>
+
+<div class="exam">
+<label>Annual (50%)</label>
+<div class="row">
+<input type="number" id="annual" placeholder="Marks">
+<input type="number" id="annualt" placeholder="Out of">
+</div>
+</div>
+
+<button onclick="calculate()">Calculate Result</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+function calculate(){
+
+let u1=parseFloat(document.getElementById("u1").value)||0;
+let u1t=parseFloat(document.getElementById("u1t").value)||1;
+
+let u2=parseFloat(document.getElementById("u2").value)||0;
+let u2t=parseFloat(document.getElementById("u2t").value)||1;
+
+let half=parseFloat(document.getElementById("half").value)||0;
+let halft=parseFloat(document.getElementById("halft").value)||1;
+
+let annual=parseFloat(document.getElementById("annual").value)||0;
+let annualt=parseFloat(document.getElementById("annualt").value)||1;
+
+
+/* combine unit tests */
+
+let unitMarks=u1+u2;
+let unitTotal=u1t+u2t;
+
+/* same calculation logic */
+
+let p20=(unitMarks*0.20);
+let p30=(half*0.30);
+let p50=(annual*0.50);
+
+let obtained=p20+p30+p50;
+
+let full=(unitTotal*0.20)+(halft*0.30)+(annualt*0.50);
+
+let final=((obtained/full)*100).toFixed(2);
+
+/* display */
+
+document.getElementById("result").innerHTML=
+
+"20% Unit Tests = <span>"+p20.toFixed(2)+"</span><br>"+
+"30% Half Yearly = <span>"+p30.toFixed(2)+"</span><br>"+
+"50% Annual = <span>"+p50.toFixed(2)+"</span><br><br>"+
+"Final Percentage = <span>"+final+"%</span>";
+
+}
+
+</script>
+
+</body>
+</html>
