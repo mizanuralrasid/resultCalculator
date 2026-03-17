@@ -2,117 +2,85 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student Result Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Result Calculator</title>
 
 <style>
 
+:root{
+--primary:#4facfe;
+--secondary:#00f2fe;
+}
+
 *{
-margin:0;
-padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:Segoe UI, Arial;
 }
 
 body{
-min-height:100vh;
+margin:0;
+background:linear-gradient(135deg,var(--primary),var(--secondary));
 display:flex;
-align-items:center;
 justify-content:center;
-background:linear-gradient(135deg,#667eea,#764ba2);
+align-items:center;
+min-height:100vh;
 padding:20px;
 }
 
-/* CARD */
-
-.container{
-width:420px;
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(15px);
-border-radius:16px;
-padding:30px;
-box-shadow:0 15px 40px rgba(0,0,0,0.25);
-color:white;
+.card{
+background:white;
+width:100%;
+max-width:420px;
+padding:25px;
+border-radius:14px;
+box-shadow:0 15px 30px rgba(0,0,0,0.2);
 }
-
-/* TITLE */
 
 h2{
 text-align:center;
-margin-bottom:25px;
-font-weight:600;
-}
-
-/* EXAM BLOCK */
-
-.exam{
-margin-bottom:18px;
+margin-bottom:20px;
 }
 
 label{
-font-size:14px;
 font-weight:600;
+font-size:14px;
+margin-top:12px;
 display:block;
-margin-bottom:5px;
-}
-
-.row{
-display:flex;
-gap:10px;
 }
 
 input{
-flex:1;
-padding:10px;
-border:none;
+width:100%;
+padding:12px;
+margin-top:6px;
 border-radius:8px;
-outline:none;
-font-size:14px;
+border:1px solid #ddd;
+font-size:16px;
 }
-
-/* BUTTON */
 
 button{
 width:100%;
-padding:12px;
-margin-top:10px;
+padding:14px;
+margin-top:20px;
 border:none;
 border-radius:10px;
-background:#00e5ff;
-color:#003344;
-font-size:16px;
-font-weight:600;
+background:#4facfe;
+color:white;
+font-size:17px;
 cursor:pointer;
-transition:0.3s;
 }
 
 button:hover{
-transform:scale(1.03);
-background:#00c9e0;
+background:#2d8cf0;
 }
-
-/* RESULT */
 
 .result{
 margin-top:20px;
-background:white;
-color:#333;
-padding:15px;
+padding:18px;
+background:#f6f8fb;
 border-radius:10px;
-font-size:15px;
-line-height:1.7;
-}
-
-.result span{
-font-weight:bold;
-color:#764ba2;
-}
-
-@media(max-width:480px){
-
-.container{
-width:100%;
-}
-
+font-size:18px;
+text-align:center;
+display:none;
 }
 
 </style>
@@ -120,43 +88,23 @@ width:100%;
 
 <body>
 
-<div class="container">
+<div class="card">
 
 <h2>Result Percentage Calculator</h2>
 
-<div class="exam">
-<label>1st Unit Test</label>
-<div class="row">
-<input type="number" id="u1" placeholder="Marks">
-<input type="number" id="u1t" placeholder="Out of">
-</div>
-</div>
+<label>Grand Total Marks Obtained</label>
+<input type="number" id="obtained" placeholder="Example: 289.9">
 
-<div class="exam">
-<label>2nd Unit Test</label>
-<div class="row">
-<input type="number" id="u2" placeholder="Marks">
-<input type="number" id="u2t" placeholder="Out of">
-</div>
-</div>
+<label>Total Marks of Unit Tests (Both)</label>
+<input type="number" id="unitTotal" placeholder="Example: 500">
 
-<div class="exam">
-<label>Half Yearly (30%)</label>
-<div class="row">
-<input type="number" id="half" placeholder="Marks">
-<input type="number" id="halft" placeholder="Out of">
-</div>
-</div>
+<label>Total Marks of Half Yearly</label>
+<input type="number" id="halfTotal" placeholder="Example: 400">
 
-<div class="exam">
-<label>Annual (50%)</label>
-<div class="row">
-<input type="number" id="annual" placeholder="Marks">
-<input type="number" id="annualt" placeholder="Out of">
-</div>
-</div>
+<label>Total Marks of Annual</label>
+<input type="number" id="annualTotal" placeholder="Example: 400">
 
-<button onclick="calculate()">Calculate Result</button>
+<button onclick="calculate()">Calculate Percentage</button>
 
 <div class="result" id="result"></div>
 
@@ -166,44 +114,18 @@ width:100%;
 
 function calculate(){
 
-let u1=parseFloat(document.getElementById("u1").value)||0;
-let u1t=parseFloat(document.getElementById("u1t").value)||1;
+let obtained = parseFloat(document.getElementById("obtained").value) || 0;
+let unitTotal = parseFloat(document.getElementById("unitTotal").value) || 0;
+let halfTotal = parseFloat(document.getElementById("halfTotal").value) || 0;
+let annualTotal = parseFloat(document.getElementById("annualTotal").value) || 0;
 
-let u2=parseFloat(document.getElementById("u2").value)||0;
-let u2t=parseFloat(document.getElementById("u2t").value)||1;
+let full = (unitTotal * 0.20) + (halfTotal * 0.30) + (annualTotal * 0.50);
 
-let half=parseFloat(document.getElementById("half").value)||0;
-let halft=parseFloat(document.getElementById("halft").value)||1;
+let percentage = ((obtained / full) * 100).toFixed(2);
 
-let annual=parseFloat(document.getElementById("annual").value)||0;
-let annualt=parseFloat(document.getElementById("annualt").value)||1;
-
-
-/* combine unit tests */
-
-let unitMarks=u1+u2;
-let unitTotal=u1t+u2t;
-
-/* same calculation logic */
-
-let p20=(unitMarks*0.20);
-let p30=(half*0.30);
-let p50=(annual*0.50);
-
-let obtained=p20+p30+p50;
-
-let full=(unitTotal*0.20)+(halft*0.30)+(annualt*0.50);
-
-let final=((obtained/full)*100).toFixed(2);
-
-/* display */
-
-document.getElementById("result").innerHTML=
-
-"20% Unit Tests = <span>"+p20.toFixed(2)+"</span><br>"+
-"30% Half Yearly = <span>"+p30.toFixed(2)+"</span><br>"+
-"50% Annual = <span>"+p50.toFixed(2)+"</span><br><br>"+
-"Final Percentage = <span>"+final+"%</span>";
+let result = document.getElementById("result");
+result.style.display = "block";
+result.innerHTML = "Final Percentage: <b>"+percentage+"%</b>";
 
 }
 
