@@ -112,6 +112,11 @@ display:none;
 
 <script>
 
+function truncate(number, decimals){
+let factor = Math.pow(10, decimals);
+return Math.floor(number * factor) / factor;
+}
+
 function calculate(){
 
 let obtained = parseFloat(document.getElementById("obtained").value) || 0;
@@ -121,11 +126,14 @@ let annualTotal = parseFloat(document.getElementById("annualTotal").value) || 0;
 
 let full = (unitTotal * 0.20) + (halfTotal * 0.30) + (annualTotal * 0.50);
 
-let percentage = ((obtained / full) * 100).toFixed(2);
+let percentage = (obtained / full) * 100;
+
+/* cut decimal instead of rounding */
+percentage = truncate(percentage,2);
 
 let result = document.getElementById("result");
 result.style.display = "block";
-result.innerHTML = "Final Percentage: <b>"+percentage+"%</b>";
+result.innerHTML = "Final Percentage: <b>"+percentage.toFixed(2)+"%</b>";
 
 }
 
